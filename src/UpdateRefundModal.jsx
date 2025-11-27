@@ -44,12 +44,13 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
     try {
       setSubmitting(true);
       setError('');
+      const cleanContact = String(contact).replace(/\D/g, '').slice(0, 10);
       await onSubmit({
         Amount: amount,
         Closing_Date: toISO(closingDate),
         Mode_Refund: mode,
         Remark: remark,
-        Contact: contact,
+        Contact: cleanContact,
       });
     } catch (err) {
       console.error(err);
@@ -96,10 +97,9 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
               <input
                 type="tel"
                 inputMode="numeric"
-                pattern="\\d{10}"
                 maxLength={10}
                 value={contact}
-                onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                onChange={(e) => setContact(e.target.value.replace(/\\D/g, '').slice(0, 10))}
                 required
               />
               {fieldErrors.contact && <small className="field-error">{fieldErrors.contact}</small>}

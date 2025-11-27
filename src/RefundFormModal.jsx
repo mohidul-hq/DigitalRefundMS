@@ -61,7 +61,8 @@ export default function RefundFormModal({ onClose, onSubmit }) {
     try {
       setSubmitting(true);
       setError('');
-      await onSubmit({ referenceNumber, amount, date, closingDate, mode, remark, contact });
+      const cleanContact = String(contact).replace(/\D/g, '').slice(0, 10);
+      await onSubmit({ referenceNumber, amount, date, closingDate, mode, remark, contact: cleanContact });
     } catch (err) {
       console.error(err);
       setError('Failed to create refund.');
@@ -109,7 +110,6 @@ export default function RefundFormModal({ onClose, onSubmit }) {
               <input
                 type="tel"
                 inputMode="numeric"
-                pattern="\\d{10}"
                 maxLength={10}
                 value={contact}
                 onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 10))}
