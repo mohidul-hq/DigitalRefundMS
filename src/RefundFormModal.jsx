@@ -22,11 +22,40 @@ export default function RefundFormModal({ onClose, onSubmit }) {
   const [contact, setContact] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
+
+  const validate = () => {
+    const errs = {};
+    // Amount must be a positive number
+    const amt = parseFloat(String(amount).replace(/,/g, ''));
+    if (!Number.isFinite(amt) || amt <= 0) {
+      errs.amount = 'Amount must be a positive number.';
+    }
+    // Contact must be exactly 10 digits (ignore spaces, dashes)
+    const digits = String(contact).replace(/\D/g, '');
+    if (digits.length !== 10) {
+      errs.contact = 'Contact must be exactly 10 digits.';
+    }
+    // Date required; Closing Date should not be before Date
+    if (!date) {
+      errs.date = 'Date is required.';
+    }
+    if (closingDate && date && new Date(closingDate) < new Date(date)) {
+      errs.closingDate = 'Closing date cannot be earlier than date.';
+    }
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!referenceNumber || !amount || !date || !contact) {
       setError('Reference #, amount, date and contact are required.');
+      validate();
+      return;
+    }
+    if (!validate()) {
+      setError('Please fix the highlighted fields.');
       return;
     }
     try {
@@ -58,29 +87,42 @@ export default function RefundFormModal({ onClose, onSubmit }) {
 
             <label>
               Amount (₹)
-              <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+              <input
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
+              {fieldErrors.amount && <small className="field-error">{fieldErrors.amount}</small>}
             </label>
 
             <label>
               Date
               <input type="date" value={date} onChange={(e) => { const v = e.target.value; setDate(v); setClosingDate(addDaysISO(v, defaultClosingOffsetDays)); }} required />
+              {fieldErrors.date && <small className="field-error">{fieldErrors.date}</small>}
             </label>
 
             <label>
               Contact
               <input
-                type="text"
-                maxLength={100}
+                type="tel"
+                inputMode="numeric"
+                pattern="\\d{10}"
+                maxLength={10}
                 value={contact}
-                onChange={(e) => setContact(e.target.value)}
-                placeholder="Customer contact"
+                onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                placeholder="10-digit mobile number"
                 required
               />
+              {fieldErrors.contact && <small className="field-error">{fieldErrors.contact}</small>}
             </label>
 
             <label>
               Closing Date
               <input type="date" value={closingDate} onChange={(e) => setClosingDate(e.target.value)} />
+              {fieldErrors.closingDate && <small className="field-error">{fieldErrors.closingDate}</small>}
             </label>
 
             <label>

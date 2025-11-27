@@ -21,13 +21,24 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
   const [contact, setContact] = useState(refund.Contact || '');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
 
   const canSubmit = useMemo(() => !!(contact && amount), [contact, amount]);
 
+  const validate = () => {
+    const errs = {};
+    const amt = parseFloat(String(amount).replace(/,/g, ''));
+    if (!Number.isFinite(amt) || amt <= 0) errs.amount = 'Amount must be a positive number.';
+    const digits = String(contact).replace(/\D/g, '');
+    if (digits.length !== 10) errs.contact = 'Contact must be exactly 10 digits.';
+    setFieldErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!canSubmit) {
-      setError('Amount and Contact are required.');
+    if (!canSubmit || !validate()) {
+      setError('Please fix the highlighted fields.');
       return;
     }
     try {
@@ -63,7 +74,8 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
             </label>
             <label>
               Amount (₹)
-              <input type="number" step="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+              <input type="number" step="0.01" min="0.01" value={amount} onChange={(e) => setAmount(e.target.value)} required />
+              {fieldErrors.amount && <small className="field-error">{fieldErrors.amount}</small>}
             </label>
             <label>
               Closing Date
@@ -81,7 +93,16 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
             </label>
             <label>
               Contact
-              <input type="text" maxLength={100} value={contact} onChange={(e) => setContact(e.target.value)} required />
+              <input
+                type="tel"
+                inputMode="numeric"
+                pattern="\\d{10}"
+                maxLength={10}
+                value={contact}
+                onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                required
+              />
+              {fieldErrors.contact && <small className="field-error">{fieldErrors.contact}</small>}
             </label>
             <label className="full-width">
               Remark
