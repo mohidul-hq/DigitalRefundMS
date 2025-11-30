@@ -1,103 +1,82 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/*
-  Custom utility classes used by components (Login animations and effects).
-  Scoped in Tailwind layers to keep ordering predictable.
-*/
-@layer utilities {
-  .cursor-gradient {
-    position: relative;
-    isolation: isolate;
-  }
-  .cursor-gradient::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(
-      600px 600px at calc(var(--mx, 0.5) * 100%) calc(var(--my, 0.5) * 100%),
-      rgba(56, 189, 248, 0.14),
-      rgba(99, 102, 241, 0.10) 35%,
-      transparent 60%
-    );
-    z-index: 0;
-  }
+/* App layout */
+.app-root { @apply min-h-screen bg-slate-950 text-slate-100 p-4 sm:p-6; }
+.app-topbar { @apply mb-6 flex items-center justify-between rounded-xl border border-white/10 bg-white/5 backdrop-blur px-3 py-2; }
+.app-topbar-left { @apply flex items-center; }
 
-  .cursor-spotlight {
-    background: radial-gradient(
-      240px 240px at calc(var(--mx, 0.5) * 100%) calc(var(--my, 0.5) * 100%),
-      rgba(255, 255, 255, 0.06),
-      transparent 60%
-    );
-  }
+/* Badges / Pills */
+.pill { @apply inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium; }
+.pill-blue { @apply bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300; }
+.pill-orange { @apply bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300; }
+.pill-green { @apply bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300; }
 
-  .card-glow {
-    box-shadow: 0 12px 40px -12px rgba(56, 189, 248, 0.3);
-  }
+/* Buttons */
+.primary-btn { @apply inline-flex items-center rounded-full bg-emerald-600 text-white px-4 py-2 text-sm font-medium shadow hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed; }
+.secondary-btn { @apply inline-flex items-center rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-slate-100 hover:bg-white/10 disabled:opacity-60 disabled:cursor-not-allowed; }
+.process-btn { @apply inline-flex items-center rounded-full bg-emerald-600 text-white px-4 py-2 text-sm font-medium shadow hover:bg-emerald-500 disabled:opacity-60 disabled:cursor-not-allowed; }
 
-  .cursor-shine {
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.12), transparent);
-    transform: translateX(-100%);
-    animation: shine-sweep 2.4s ease-in-out infinite;
-  }
+/* Dashboard */
+.dashboard { @apply mx-auto max-w-6xl space-y-6; }
+.dashboard-header { @apply flex items-end justify-between rounded-2xl border border-white/10 bg-linear-to-b from-white/10 to-white/5 p-6 shadow-xl; }
+.cards-row { @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4; }
 
-  .portal-ring {
-    width: 140px;
-    height: 140px;
-    border-radius: 9999px;
-    border: 2px solid rgba(99, 102, 241, 0.6);
-    filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.25));
-    animation: ring-pulse 1.2s ease-out infinite;
-  }
-  .portal-core {
-    position: absolute;
-    inset: 50% auto auto 50%;
-    width: 18px;
-    height: 18px;
-    transform: translate(-50%, -50%);
-    border-radius: 9999px;
-    background: radial-gradient(circle at 30% 30%, #60a5fa, #22d3ee 60%, transparent 70%);
-    box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
-  }
-  .success-ripple {
-    position: absolute;
-    inset: 50% auto auto 50%;
-    width: 2px;
-    height: 2px;
-    transform: translate(-50%, -50%);
-    border-radius: 9999px;
-    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
-    animation: ripple 1.2s ease-out forwards;
-  }
-  .delay-150 { animation-delay: 150ms; }
-  .delay-200 { animation-delay: 200ms; }
+.summary-card { @apply rounded-2xl border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-900/40 p-5 shadow-xl; }
+.summary-top { @apply flex justify-end; }
+.summary-bottom { @apply mt-2; }
+.summary-title { @apply text-sm text-slate-400; }
+.summary-value { @apply text-2xl font-semibold; }
 
-  .animate-float-slow { animation: float 6s ease-in-out infinite; }
-  .animate-float-slower { animation: float 9s ease-in-out infinite; }
-  .animate-rise-in { animation: rise-in 600ms cubic-bezier(.2,.7,.2,1) both; }
-}
+.table-card { @apply rounded-2xl border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-900/40 overflow-hidden shadow-2xl; }
+.table-header { @apply flex items-center gap-3 p-4 border-b border-white/10; }
 
-@keyframes shine-sweep {
-  0% { transform: translateX(-120%); }
-  45% { transform: translateX(120%); }
-  100% { transform: translateX(120%); }
-}
-@keyframes ring-pulse {
-  0% { transform: scale(0.92); opacity: 0.9; }
-  70% { transform: scale(1.04); opacity: 0.55; }
-  100% { transform: scale(1); opacity: 0.35; }
-}
-@keyframes ripple {
-  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); opacity: 1; }
-  100% { box-shadow: 0 0 0 120px rgba(34, 197, 94, 0); opacity: 0; }
-}
-@keyframes float {
-  0%,100% { transform: translate3d(0, 0, 0); }
-  50% { transform: translate3d(0, -8px, 0); }
-}
-@keyframes rise-in {
-  from { opacity: 0; transform: translate3d(0, 12px, 0); }
-  to { opacity: 1; transform: translate3d(0, 0, 0); }
-}
+.error-banner { @apply mx-4 my-3 rounded-md border border-red-800 bg-red-900/30 text-red-300 px-3 py-2; }
+.loading { @apply p-6 text-center text-slate-400; }
+.empty-state { @apply p-6 text-center text-slate-400; }
+
+.refund-table { @apply w-full text-sm; }
+.refund-table th { @apply text-left font-semibold text-slate-300 bg-white/5; }
+.refund-table th, .refund-table td { @apply px-3 py-3 border-b border-white/10; }
+.refund-table tbody tr { @apply transition-colors; }
+.refund-table tbody tr:hover { @apply bg-white/5; }
+
+.status-pill { @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium; }
+.status-paid { @apply bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300; }
+.status-pending { @apply bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300; }
+.paid-info { @apply text-xs text-slate-400; }
+
+/* Modal */
+.modal-backdrop { @apply fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4; }
+.modal { @apply w-full max-w-3xl rounded-2xl bg-slate-950 border border-white/10 shadow-2xl; }
+.modal-header { @apply flex items-center justify-between px-5 py-4 border-b border-white/10; }
+.icon-btn { @apply p-2 rounded-md hover:bg-white/10; }
+.modal-body { @apply p-5; }
+.modal-footer { @apply flex items-center justify-end gap-2 px-5 py-4 border-t border-white/10; }
+
+/* Form */
+.form-grid { @apply grid grid-cols-1 sm:grid-cols-2 gap-4; }
+.full-width { @apply sm:col-span-2; }
+.field-error { @apply mt-1 text-xs text-red-400; }
+.modal label { @apply text-sm font-medium text-slate-300; }
+.modal input[type="text"],
+.modal input[type="number"],
+.modal input[type="date"],
+.modal input[type="tel"],
+.modal select,
+.modal textarea { @apply mt-1 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400; }
+.modal input[type="text"],
+.modal input[type="number"],
+.modal input[type="date"],
+.modal input[type="tel"],
+.modal select { @apply mt-1 w-full rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400; }
+.modal textarea { @apply resize-y; }
+
+/* Card header text helpers */
+.table-card .table-header h2 { @apply text-lg font-semibold; }
+.table-card .table-header p { @apply text-sm text-slate-400; }
+
+/* Inputs */
+.search-input { @apply w-[260px] sm:w-[320px] rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-400; }
+
+/* Info panel used inside modals */
+.info-panel { @apply p-3 sm:p-4 rounded-lg border border-white/10 bg-linear-to-b from-white/10 to-white/5; }

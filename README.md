@@ -40,22 +40,6 @@ npm run dev
 
 The app opens on `http://localhost:5173`.
 
-## Tailwind CSS
-
-Tailwind CSS is configured and ready:
-
-- `tailwind.config.js` scans `index.html` and `src/**/*.{js,jsx,ts,tsx}`.
-- `postcss.config.js` enables Tailwind + Autoprefixer in Vite.
-- `src/index.css` includes Tailwind layers and a few custom utilities for the Login animations.
-- `src/main.jsx` imports `index.css` before `App.css` to apply utilities while preserving existing styles.
-
-Commands:
-
-```powershell
-npm install
-npm run dev
-```
-
 ## Notes
 
 - The UI mirrors your sample (dark cards + table).

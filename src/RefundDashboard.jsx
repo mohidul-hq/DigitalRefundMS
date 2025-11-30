@@ -178,13 +178,13 @@ export default function RefundDashboard() {
             <h2>Refunds</h2>
             <p>Track pending and paid customer refunds</p>
           </div>
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="ml-auto flex items-center gap-2">
             <input
               type="text"
               placeholder="Search by reference, contact, mode..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              style={{ padding: '8px 10px', borderRadius: '6px', border: '1px solid #444', background: 'transparent', color: 'inherit', minWidth: '260px' }}
+              className="search-input"
             />
           </div>
         </div>
@@ -193,13 +193,12 @@ export default function RefundDashboard() {
         {!connectionOk && connectionDetails && (
           <div className="error-banner">
             <strong>Connection issue:</strong> {connectionDetails.error}
-            <div style={{ marginTop: '4px', fontSize: '12px', opacity: 0.9 }}>
+            <div className="mt-1 text-xs opacity-90">
               Stage: {connectionDetails.stage}
               {' '}| Endpoint: {APPWRITE_DATABASE_ID ? 'DB ID set' : 'DB ID missing'} / {APPWRITE_COLLECTION_ID ? 'Collection ID set' : 'Collection ID missing'}
             </div>
             <button
-              className="secondary-btn"
-              style={{ marginTop: '8px' }}
+              className="secondary-btn mt-2"
               onClick={fetchRefunds}
             >Retry Ping</button>
           </div>
@@ -241,7 +240,7 @@ export default function RefundDashboard() {
                   <td>{r.Remark || '-'}</td>
                   <td>{r.Contact || '-'}</td>
                   <td>
-                    <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
+                    <div className="flex items-center gap-2">
                       <button
                         className="secondary-btn"
                         onClick={() => setEditTarget(r)}
@@ -279,23 +278,18 @@ export default function RefundDashboard() {
               <button className="icon-btn" onClick={() => setShowCreatedPopup(null)}>✕</button>
             </header>
             <div className="modal-body">
-              <div style={{
-                padding: '8px 12px',
-                border: '1px solid var(--border-color, #333)',
-                borderRadius: '8px',
-                background: 'linear-gradient(180deg, rgba(64,64,64,0.15), rgba(64,64,64,0.05))'
-              }}>
-                <p style={{ margin: 0 }}><strong>Reference:</strong> {showCreatedPopup.doc.Reference_Number}</p>
-                <p style={{ margin: '6px 0 0 0' }}>
+              <div className="info-panel">
+                <p className="m-0"><strong>Reference:</strong> {showCreatedPopup.doc.Reference_Number}</p>
+                <p className="mt-1">
                   <strong>Date:</strong> {formatDateDisplay(showCreatedPopup.doc.Date)}
                 </p>
-                <p style={{ margin: '6px 0 0 0', color: 'orange' }}>
+                <p className="mt-1 text-amber-400">
                   ⚠ Please claim your refund within 15 days
                   {showCreatedPopup.doc.Closing_Date ? ` (by ${formatDateDisplay(showCreatedPopup.doc.Closing_Date)})` : ''}.
                   After this period, we will not be responsible for any delays or claims.
                 </p>
               </div>
-              <div style={{ display:'flex', gap: '8px', marginTop: '12px', justifyContent:'flex-end' }}>
+              <div className="flex gap-2 mt-3 justify-end">
                 <button
                   className="secondary-btn"
                   onClick={async () => {
@@ -317,21 +311,16 @@ export default function RefundDashboard() {
               <button className="icon-btn" onClick={() => setShowProcessedPopup(null)}>✕</button>
             </header>
             <div className="modal-body">
-              <div style={{
-                padding: '8px 12px',
-                border: '1px solid var(--border-color, #333)',
-                borderRadius: '8px',
-                background: 'linear-gradient(180deg, rgba(64,64,64,0.15), rgba(64,64,64,0.05))'
-              }}>
-                <p style={{ margin: 0 }}>
+              <div className="info-panel">
+                <p className="m-0">
                   Refund for <strong>{showProcessedPopup.doc.Reference_Number}</strong> has been processed successfully.
                 </p>
-                <p style={{ margin: '6px 0 0 0' }}>
+                <p className="mt-1">
                   <strong>Date:</strong> {formatDateDisplay(showProcessedPopup.doc.Refund_Date || showProcessedPopup.doc.$updatedAt)}
                   {' '}• <strong>Amount:</strong> ₹{formatAmount(showProcessedPopup.doc.Amount)}
                 </p>
               </div>
-              <div style={{ display:'flex', gap:'8px', marginTop:'12px', justifyContent:'flex-end' }}>
+              <div className="flex gap-2 mt-3 justify-end">
                 <button
                   className="secondary-btn"
                   onClick={async () => {
