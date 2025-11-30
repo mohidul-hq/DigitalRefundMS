@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 // Tailwind is imported via src/index.css in main.jsx
 import RefundDashboard from './RefundDashboard.jsx';
-import Login, { getSession, clearSession } from './Login.jsx';
 import Navbar from './components/Navbar.jsx';
+import Login from './components/Login.jsx';
+import { useAuth } from './components/AuthProvider.jsx';
 
 function App() {
-  const [session, setSession] = useState(null);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const s = getSession();
-    setSession(s);
-  }, []);
-
-  const handleLogout = () => {
-    clearSession();
-    setSession(null);
-    // Notify AuthProvider listeners
-    try { window.dispatchEvent(new Event('session-changed')); } catch {}
-  };
-
-  if (!session) {
+  if (loading) {
     return (
-      <div className="app-root">
-        <Login onLogin={(s) => setSession(s)} />
+      <div className="app-root flex items-center justify-center">
+        <div className="text-slate-300">Loading…</div>
       </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <Login />
     );
   }
 

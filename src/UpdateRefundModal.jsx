@@ -97,9 +97,10 @@ export default function UpdateRefundModal({ refund, onClose, onSubmit }) {
               <input
                 type="tel"
                 inputMode="numeric"
+                pattern="[0-9]{10}"
                 maxLength={10}
                 value={contact}
-                onChange={(e) => setContact(e.target.value.replace(/\\D/g, '').slice(0, 10))}
+                onChange={(e) => setContact(e.target.value.replace(/\D/g, '').slice(0, 10))}
                 required
               />
               {fieldErrors.contact && <small className="field-error">{fieldErrors.contact}</small>}

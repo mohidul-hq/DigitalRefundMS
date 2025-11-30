@@ -59,7 +59,7 @@ export default function Login() {
       <div className="relative z-10 w-full max-w-md space-y-6 bg-white/70 dark:bg-white/10 backdrop-blur-xl shadow-lg rounded-2xl p-6 border border-white/40 dark:border-white/10 animate-rise-in card-glow" style={{ boxShadow: `0 10px 30px -10px rgba(56, 189, 248, ${0.15 + (cursor.x+cursor.y)/12})` }}>
         <div className="text-center space-y-1">
           <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100">{mode === 'login' ? 'Sign in' : 'Create account'}</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Access the Policy Manager</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Access the Refund Manager</p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
           {mode === 'register' && (
@@ -87,7 +87,7 @@ export default function Login() {
                 type="button"
                 onClick={() => setShowPassword(s => !s)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-white/20"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-gray-600 dark:text-gray-300 hover:bg-white/60 dark:hover:bg-white/20 cursor-pointer"
               >
                 {/* Eye icon */}
                 {showPassword ? (
@@ -104,7 +104,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full relative overflow-hidden inline-flex justify-center items-center gap-2 rounded-md bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 disabled:opacity-60 text-white px-4 py-2 text-sm font-medium transition-all shadow-button"
+            className="w-full relative overflow-hidden inline-flex justify-center items-center gap-2 rounded-md bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed text-white px-4 py-2 text-sm font-medium transition-all shadow-button cursor-pointer"
           >
             <span className="relative z-10">{submitting ? 'Please wait…' : (mode === 'login' ? 'Sign in' : 'Register')}</span>
             <span className="pointer-events-none absolute inset-0 cursor-shine" />
@@ -115,15 +115,15 @@ export default function Login() {
           <span className="text-xs text-gray-500 dark:text-gray-400">or</span>
           <div className="h-px flex-1 bg-gray-200 dark:bg-gray-700" />
         </div>
-        <button onClick={loginWithGoogle} className="w-full inline-flex justify-center items-center gap-2 rounded-md border border-white/40 dark:border-white/10 bg-white/70 dark:bg-white/10 backdrop-blur-md hover:bg-white/90 dark:hover:bg-white/20 text-gray-700 dark:text-gray-100 px-4 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all">
+  <button onClick={loginWithGoogle} className="w-full inline-flex justify-center items-center gap-2 rounded-md border border-white/40 dark:border-white/10 bg-white/70 dark:bg-white/10 backdrop-blur-md hover:bg-white/90 dark:hover:bg-white/20 text-gray-700 dark:text-gray-100 px-4 py-2 text-sm font-medium shadow-sm hover:shadow-md transition-all cursor-pointer">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" className="w-5 h-5"><path fill="#EA4335" d="M24 9.5c3.54 0 6.72 1.22 9.21 3.61l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.05 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.14-3.08-.39-4.55H24v9.02h12.92c-.56 2.99-2.25 5.53-4.79 7.22l7.73 6c4.51-4.17 7.12-10.32 7.12-17.69z"/><path fill="#FBBC05" d="M10.54 28.41A14.5 14.5 0 019.5 24c0-1.53.26-3.01.73-4.41l-7.98-6.19A23.915 23.915 0 000 24c0 3.86.9 7.51 2.47 10.75l8.07-6.34z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.91-5.79l-7.73-6c-2.15 1.36-4.92 2.16-8.18 2.16-6.26 0-11.57-3.55-14.46-8.72l-8.07 6.34C6.51 42.62 14.62 48 24 48z"/><path fill="none" d="M0 0h48v48H0z"/></svg>
           <span>Continue with Google</span>
         </button>
         <div className="text-center text-sm">
           {mode === 'login' ? (
-            <button onClick={() => setMode('register')} className="text-blue-600 dark:text-blue-400 hover:underline">Need an account? Register</button>
+            <button onClick={() => setMode('register')} className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Need an account? Register</button>
           ) : (
-            <button onClick={() => setMode('login')} className="text-blue-600 dark:text-blue-400 hover:underline">Have an account? Sign in</button>
+            <button onClick={() => setMode('login')} className="text-blue-600 dark:text-blue-400 hover:underline cursor-pointer">Have an account? Sign in</button>
           )}
         </div>
       </div>
